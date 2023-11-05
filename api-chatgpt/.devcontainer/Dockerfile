@@ -1,4 +1,5 @@
-FROM python:3-slim
+# FROM python:3-slim
+FROM python:3.9-slim
 
 # ユーザ'vscode'を作成する
 ARG USERNAME=vscode
@@ -21,11 +22,13 @@ ENV LANGUAGE ja_JP:ja
 ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
 ENV TERM xterm
+ENV PATH "/home/vscode/.local/bin:$PATH"
 
 RUN apt-get install -y vim less gcc
 
 # 以下 pip
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
+RUN pip install openai
 #RUN pip install flake8 autopep8
 #RUN pip install python-dotenv fastapi uvicorn
