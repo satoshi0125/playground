@@ -5,8 +5,8 @@
     },
     "autoDocstring.docstringFormat": "google",
     "python.linting.lintOnSave": true,
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
     "python.formatting.provider": "none",
     "python.formatting.autopep8Args": [
         "--aggressive",
