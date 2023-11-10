@@ -33,5 +33,6 @@ RUN apt-get install -y vim less gcc
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN pip install openai
+RUN pip install -U pylint
 #RUN pip install flake8 autopep8
 #RUN pip install python-dotenv fastapi uvicorn
