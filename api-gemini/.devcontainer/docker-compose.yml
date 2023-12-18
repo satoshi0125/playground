@@ -1,0 +1,13 @@
+version: '3'
+services:
+  playground:
+    container_name: 'python-gemini'
+    hostname: 'python'
+    build: .
+    restart: always
+    working_dir: '/workspace'
+    tty: true
+    volumes:
+      - type: bind
+        source: ../workspace
+        target: /workspace
