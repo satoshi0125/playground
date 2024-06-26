@@ -1,4 +1,5 @@
 let messages = [];
+let recognition;
 
 function addMessage(content, isUser = false) {
     const chatContainer = document.getElementById('chat-container');
@@ -18,6 +19,39 @@ document.getElementById('user-input').addEventListener('keypress', function(e) {
         sendMessage();
     }
 });
+
+// 音声認識の設定
+if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = false;
+    recognition.lang = 'ja-JP';
+
+    recognition.onresult = function(event) {
+        const result = event.results[0][0].transcript;
+        document.getElementById('user-input').value = result;
+    };
+
+    recognition.onerror = function(event) {
+        console.error('Speech recognition error', event.error);
+    };
+
+    document.getElementById('voice-input-btn').addEventListener('click', function() {
+        recognition.start();
+        this.textContent = '聞いています...';
+        this.classList.remove('bg-green-500', 'hover:bg-green-700');
+        this.classList.add('bg-red-500', 'hover:bg-red-700');
+    });
+
+    recognition.onend = function() {
+        const button = document.getElementById('voice-input-btn');
+        button.textContent = '音声入力';
+        button.classList.remove('bg-red-500', 'hover:bg-red-700');
+        button.classList.add('bg-green-500', 'hover:bg-green-700');
+    };
+} else {
+    console.log('Web Speech API is not supported in this browser.');
+    document.getElementById('voice-input-btn').style.display = 'none';
+}
 
 function sendMessage() {
     const userInput = document.getElementById('user-input');
