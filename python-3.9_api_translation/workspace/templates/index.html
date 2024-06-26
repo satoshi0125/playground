@@ -32,7 +32,10 @@
                         <option value="{{ profile }}">{{ profile }} - {{ description }}</option>
                     {% endfor %}
                 </select>
-                <div id="translated-output" class="w-full h-32 p-2 border rounded-md bg-white overflow-y-auto"></div>
+                <div class="flex mb-2">
+                    <div id="translated-output" class="w-full h-32 p-2 border rounded-md bg-white overflow-y-auto"></div>
+                </div>
+                <button id="voice-output-btn" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">翻訳結果を音声出力</button>
             </div>
         </div>
     </div>

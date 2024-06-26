@@ -5,8 +5,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const fromProfile = document.getElementById('from-profile');
     const toProfile = document.getElementById('to-profile');
     const voiceInputBtn = document.getElementById('voice-input-btn');
+    const voiceOutputBtn = document.getElementById('voice-output-btn');
 
     let recognition;
+    const synth = window.speechSynthesis;
+    let voices = [];
+
+    function populateVoiceList() {
+        voices = synth.getVoices().sort(function (a, b) {
+            const aname = a.name.toUpperCase();
+            const bname = b.name.toUpperCase();
+            if (aname < bname) return -1;
+            else if (aname == bname) return 0;
+            else return +1;
+        });
+    }
+
+    populateVoiceList();
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoiceList;
+    }
+
+    function speak(text) {
+        if (synth.speaking) {
+            console.error('speechSynthesis.speaking');
+            return;
+        }
+        if (text !== '') {
+            const utterThis = new SpeechSynthesisUtterance(text);
+            utterThis.onend = function (event) {
+                console.log('SpeechSynthesisUtterance.onend');
+            }
+            utterThis.onerror = function (event) {
+                console.error('SpeechSynthesisUtterance.onerror');
+            }
+            // 日本語の音声を選択（利用可能な場合）
+            const japaneseVoice = voices.find(voice => voice.lang === 'ja-JP');
+            if (japaneseVoice) {
+                utterThis.voice = japaneseVoice;
+            }
+            utterThis.pitch = 1;
+            utterThis.rate = 1;
+            synth.speak(utterThis);
+        }
+    }
 
     if ('webkitSpeechRecognition' in window) {
         recognition = new webkitSpeechRecognition();
@@ -68,6 +110,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
                 translatedOutput.textContent = 'エラーが発生しました。もう一度お試しください。';
             });
+        }
+    });
+
+    voiceOutputBtn.addEventListener('click', function() {
+        const translatedText = translatedOutput.textContent;
+        if (translatedText) {
+            speak(translatedText);
         }
     });
 });
