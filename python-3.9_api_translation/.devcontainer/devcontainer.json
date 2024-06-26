@@ -1,0 +1,8 @@
+{
+  "name": "Python 3.9",
+  "image": "python:3.9",
+  "extensions": ["ms-python.python"],
+  "settings": {
+    "python.pythonPath": "/usr/local/bin/python"
+  }
+}
