@@ -1,0 +1,70 @@
+
+# templates/index.html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カレンダーアプリ</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .today {
+            background-color: #ffff00;
+        }
+    </style>
+</head>
+<body>
+    <h1>カレンダー</h1>
+    <button onclick="changeMonth(-1)">前月</button>
+    <span id="current-month"></span>
+    <button onclick="changeMonth(1)">翌月</button>
+    <table id="calendar"></table>
+
+    <script>
+        let currentYear = {{ year }};
+        let currentMonth = {{ month }};
+
+        function updateCalendar() {
+            axios.get(`/get_calendar?year=${currentYear}&month=${currentMonth}`)
+                .then(response => {
+                    const data = response.data;
+                    document.getElementById('current-month').textContent = `${data.year}年 ${data.month_name}`;
+                    
+                    let calendarHtml = '<tr><th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th></tr>';
+                    data.calendar.forEach(week => {
+                        calendarHtml += '<tr>';
+                        week.forEach(day => {
+                            const className = day.is_today ? 'today' : '';
+                            calendarHtml += `<td class="${className}">${day.day}<br>${day.status}</td>`;
+                        });
+                        calendarHtml += '</tr>';
+                    });
+                    document.getElementById('calendar').innerHTML = calendarHtml;
+                });
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            } else if (currentMonth < 1) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            updateCalendar();
+        }
+
+        updateCalendar();
+    </script>
+</body>
+</html>
