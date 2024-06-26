@@ -17,8 +17,13 @@
                         <option value="{{ profile }}">{{ profile }} - {{ description }}</option>
                     {% endfor %}
                 </select>
-                <textarea id="user-input" class="w-full h-32 p-2 border rounded-md" placeholder="メッセージを入力..."></textarea>
-                <button id="translate-btn" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">翻訳</button>
+                <div class="flex mb-2">
+                    <textarea id="user-input" class="flex-grow h-32 p-2 border rounded-md" placeholder="メッセージを入力..."></textarea>
+                    <button id="voice-input-btn" class="ml-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        音声入力
+                    </button>
+                </div>
+                <button id="translate-btn" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">翻訳</button>
             </div>
             <div>
                 <h2 class="text-xl font-bold mb-2">受信者</h2>
